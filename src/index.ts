@@ -1,6 +1,7 @@
 import { Telegraf } from 'telegraf';
 import express from 'express';
 import * as dotenv from 'dotenv';
+import { message } from 'telegraf/filters'
 
 dotenv.config();
 
@@ -18,24 +19,24 @@ const app = express();
 const bot = new Telegraf(BOT_TOKEN);
 
 // Bot commands
-bot.start((ctx) => ctx.reply('👋 Welcome to Spot Tech!'));
+bot.start((ctx) => ctx.reply('👋 Welcome to the Bot!'));
 bot.help((ctx) => ctx.reply('Send me a message and I will echo it.'));
-bot.on('text', (ctx) => {
+bot.on(message('text'), (ctx) => {
   console.log(`Received message: ${ctx.message.text}`);
   ctx.reply(`You said: ${ctx.message.text}`);
 });
-
-// Plug Telegraf into Express
-app.use(bot.webhookCallback('/telegram'));
 
 // Set Telegram webhook
 bot.telegram.setWebhook(`${WEBHOOK_URL}/telegram`)
   .then(() => console.log(`✅ Webhook set to ${WEBHOOK_URL}/telegram`))
   .catch((err) => console.error('❌ Error setting webhook:', err));
 
+// Plug Telegraf into Express
+app.use(bot.webhookCallback('/telegram'));
+
 // Root route for health check
 app.get('/', (req, res) => {
-  res.send('🚀 Spot Tech Bot is running!');
+  res.send('🚀 Your Bot is running!');
 });
 
 // Start Express server
