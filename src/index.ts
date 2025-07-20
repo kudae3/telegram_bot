@@ -19,17 +19,30 @@ const app = express();
 const bot = new Telegraf(BOT_TOKEN);
 
 // Bot commands
-bot.start((ctx) => ctx.reply('👋 Welcome to the Bot!'));
-bot.help((ctx) => ctx.reply('Send me a message and I will echo it.'));
+bot.start((ctx) => {
+  ctx.reply('👋 Welcome to the Bot!');
+});
+
+bot.help((ctx) => {
+  ctx.reply('Send me a message and I will echo it.');
+});
+
 bot.on(message('text'), (ctx) => {
-  console.log(`Received message: ${ctx.message.text}`);
+  const user = ctx.from?.username || 'Unknown User';
+  console.log(`Received message from ${user}: ${ctx.message.text}`);
   ctx.reply(`You said: ${ctx.message.text}`);
 });
 
 // Set Telegram webhook
 bot.telegram.setWebhook(`${WEBHOOK_URL}/telegram`)
-  .then(() => console.log(`✅ Webhook set to ${WEBHOOK_URL}/telegram`))
-  .catch((err) => console.error('❌ Error setting webhook:', err));
+  .then(async() => {
+    console.log(`Webhook set to ${WEBHOOK_URL}/telegram`)
+    const info = await bot.telegram.getWebhookInfo()
+    console.log('Current Webhook Info:', info);
+  })
+  .catch((err) => {
+    console.error('Error setting webhook:', err)
+  });
 
 // Plug Telegraf into Express
 app.use(bot.webhookCallback('/telegram'));
