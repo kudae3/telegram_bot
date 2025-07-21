@@ -20,7 +20,8 @@ const bot = new Telegraf(BOT_TOKEN);
 
 // Bot commands
 bot.start((ctx) => {
-  ctx.reply('👋 Welcome to the Bot!');
+  const user = ctx.from?.username || 'Unknown User';
+  ctx.reply(`👋 Hello ${user}, Welcome to Our Bot!`);
 });
 
 bot.help((ctx) => {
