@@ -25,3 +25,17 @@ export const sendFollowUpMsg = async (ctx: Context) => {
     ])
   );
 }
+
+export const fetchAuthors = async () => {
+    try {
+        const response = await axios.get(`${env.INSPIRE_API}/authors`);
+        console.log('General Response:', response.data.results);
+        
+        const authors = response.data.results;
+        console.log('Fetched authors:', authors);
+        return authors;
+    } catch (error) {
+        console.log('Error fetching authors:', error);
+        return [];
+    }
+}

@@ -1,5 +1,6 @@
 import { Context, Markup, Telegraf } from "telegraf";
-import { sendFollowUpMsg, sendRandomQuote } from "../utils.ts";
+import { fetchAuthors, sendFollowUpMsg, sendRandomQuote } from "../utils.ts";
+import { AuthorType } from "../../types/author.ts";
 
 export const setUpActions = (bot: Telegraf) => {
 
@@ -62,12 +63,11 @@ export const setUpActions = (bot: Telegraf) => {
 
     bot.action('choose_author', async (ctx: Context) => {
         await ctx.answerCbQuery();
+        const authors = await fetchAuthors();
+        console.log('Authors fetched:', authors);
+        
         await ctx.reply("Please choose the name of the author you want to hear quotes from.", 
-            Markup.keyboard([
-                ['Albert Einstein', 'Maya Angelou'],
-                ['Nelson Mandela', 'Steve Jobs'],
-                ['Oprah Winfrey', 'Mark Twain']
-            ])
+            Markup.keyboard(authors.map((author: AuthorType) => [author.name]))
         );
     })
 }
