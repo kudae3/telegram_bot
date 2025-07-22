@@ -59,4 +59,15 @@ export const setUpActions = (bot: Telegraf) => {
         await sendRandomQuote(ctx);
         await sendFollowUpMsg(ctx);
     })
+
+    bot.action('choose_author', async (ctx: Context) => {
+        await ctx.answerCbQuery();
+        await ctx.reply("Please choose the name of the author you want to hear quotes from.", 
+            Markup.keyboard([
+                ['Albert Einstein', 'Maya Angelou'],
+                ['Nelson Mandela', 'Steve Jobs'],
+                ['Oprah Winfrey', 'Mark Twain']
+            ])
+        );
+    })
 }
