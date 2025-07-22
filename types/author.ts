@@ -1,8 +1,8 @@
 export type AuthorType = {
-    name: String,
-    slug: String,
-    description: String,
-    bio: String,
-    link: String,
-    quoteCount: Number,
+    name: string,
+    slug: string,
+    description: string,
+    bio: string,
+    link: string,
+    quoteCount: number,
 }

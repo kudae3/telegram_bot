@@ -1,6 +1,5 @@
 import { Context, Markup, Telegraf } from "telegraf";
 import { fetchAuthors, sendFollowUpMsg, sendRandomQuote } from "../utils.ts";
-import { AuthorType } from "../../types/author.ts";
 
 export const setUpActions = (bot: Telegraf) => {
 
@@ -67,7 +66,7 @@ export const setUpActions = (bot: Telegraf) => {
         console.log('Authors fetched:', authors);
         
         await ctx.reply("Please choose the name of the author you want to hear quotes from.", 
-            Markup.keyboard(authors.map((author: AuthorType) => [author.name]))
+            Markup.keyboard(authors.map((author: {name: string}) => [author.name]))
         );
     })
 }
