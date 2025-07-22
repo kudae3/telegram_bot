@@ -1,32 +1,27 @@
 import axios from "axios";
-import { Context } from "telegraf";
-
-
+import { Context, Markup } from "telegraf";
+import { env } from "../config/env.ts";
 
 export const sendRandomQuote = async (ctx: Context) => {
-    const ZENQUOTE_API = process.env.ZENQUOTE_API as string;
     try {
-        const response = await axios.get(ZENQUOTE_API);
+        const url = `${env.INSPIRE_API}/quotes/random`;
+        const response = await axios.get(url);
         console.log('Random Quote fetched:', response.data);
-        const quote = response.data[0].q;
-        const author = response.data[0].a;
+        const quote = await response.data[0].content;
+        const author = await response.data[0].author;
         await ctx.reply(`💬 "${quote}" - ${author}`);
     } catch (error) {
-        console.error('Error fetching quote:', error);
+        console.log('Error fetching quote:', error);
         ctx.reply('Sorry, I could not fetch a quote at the moment.');
     }
 }
 
-export const sendTodayQuote = async(ctx: Context) => {
-  const TODAY_ZENQUOTE_API = process.env.TODAY_ZENQUOTE_API as string;
-    try {
-    const response = await axios.get(TODAY_ZENQUOTE_API);
-    console.log('Toady Quote fetched:', response.data);
-    const quote = response.data[0].q;
-    const author = response.data[0].a;
-    ctx.reply(`💬 "${quote}" - ${author}`);
-  } catch (error) {
-    console.error('Error fetching quote:', error);
-    ctx.reply('Sorry, I could not fetch a quote at the moment.');
-  }
+export const sendFollowUpMsg = async (ctx: Context) => {
+    await ctx.reply("Do you like it? If you want more inspiration, just let me know!",
+    Markup.inlineKeyboard([
+      Markup.button.callback('Yes, another one!', 'random_quote'),
+      Markup.button.callback('I want to choose the category', 'choose_category'),
+      Markup.button.callback('No, I need a break', 'quit')
+    ])
+  );
 }
