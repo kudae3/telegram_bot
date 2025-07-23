@@ -29,13 +29,27 @@ export const sendFollowUpMsg = async (ctx: Context) => {
 export const fetchAuthors = async () => {
     try {
         const response = await axios.get(`${env.INSPIRE_API}/authors`);
-        console.log('General Response:', response.data.results);
-        
         const authors = response.data.results;
-        console.log('Fetched authors:', authors);
         return authors;
     } catch (error) {
         console.log('Error fetching authors:', error);
+        return [];
+    }
+}
+
+export const fetchQuoteByAuthor = async(author: string) => {
+   try {
+        const url = `${env.INSPIRE_API}/quotes?author=${encodeURIComponent(author)}`;
+        const response = await axios.get(url);
+        const quotes = response.data.results;
+        if (quotes.length > 0) {
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            return quotes[randomIndex];
+        } else {
+            return null;
+        }
+    } catch (error) {
+        console.log(`Error fetching quotes by ${author}:`, error);
         return [];
     }
 }
