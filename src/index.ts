@@ -4,6 +4,7 @@ import * as dotenv from 'dotenv';
 import { setUpActions } from './bot/actions.ts';
 import { setUpCommands } from './bot/commands.ts';
 import { setupWebhook } from './webhook.ts';
+import { smallTalk } from './smallTalk.ts';
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ const bot = new Telegraf(BOT_TOKEN);
 setUpActions(bot);
 setUpCommands(bot);
 setupWebhook(bot);
+smallTalk(bot);
 
 // Plug Telegraf into Express
 app.use(bot.webhookCallback('/telegram'));

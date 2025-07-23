@@ -1,8 +1,9 @@
 import { Markup, Telegraf } from "telegraf";
 import { fetchAuthors, fetchQuoteByAuthor, sendFollowUpMsg, sendRandomQuote } from "../utils.ts";
-import { message } from "telegraf/filters";
 
 export const setUpCommands = async(bot: Telegraf) => {
+
+const authors = await fetchAuthors();
 
 bot.help((ctx) => {
   ctx.reply('Send /start to receive a greeting');
@@ -19,7 +20,6 @@ bot.command('/quit', (ctx) => {
   ctx.reply('👋 Goodbye! If you need assistance, just type /start');
 });
 
-const authors = await fetchAuthors();
 authors.forEach((author: { name: string }) => {
   bot.hears(author.name, async (ctx) => {
     const quote = await fetchQuoteByAuthor(author.name);
@@ -28,11 +28,35 @@ authors.forEach((author: { name: string }) => {
       await ctx.reply(`"${quote.content}" — ${quote.author}`);
       await ctx.reply(`I hope you like this quote! If you want to hear another one, just type the author's name again or send /random_quote.`,
         Markup.keyboard([
-          ['Choose Author', 'Random Quote', 'Quit'],
+          [`About ${author.name}`, `One More Quote by ${author.name}`, 'Choose Author', 'Random Quote', 'Quit'],
         ]).oneTime().resize()
       )
     } else {
       await ctx.reply(`No quotes found for ${author.name}.`);
+    }
+  });
+});
+
+authors.forEach((author: { name: string, bio: string }) => {
+  bot.hears(`About ${author.name}`, async (ctx) => {
+    await ctx.reply(`${author.bio}`, 
+      Markup.keyboard([
+        [`One More Quote by ${author.name}`, 'Random Quote', 'Quit'],
+      ]).oneTime().resize());
+  });
+});
+
+authors.forEach((author: { name: string}) => {
+  bot.hears(`One More Quote by ${author.name}`, async (ctx) => {
+    const quote = await fetchQuoteByAuthor(author.name);
+    if (quote) {
+      await ctx.reply(`${quote.content} - ${quote.author}`, 
+        Markup.keyboard([
+          [`About ${author.name}`, `One More Quote by ${author.name}`, 'Choose Author', 'Random Quote', 'Quit'],
+        ]).oneTime().resize()
+      );
+    } else {
+      await ctx.reply(`No more quotes found for ${author.name}.`);
     }
   });
 });
