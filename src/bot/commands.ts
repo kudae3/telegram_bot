@@ -5,10 +5,10 @@ export const setUpCommands = async(bot: Telegraf) => {
 
 const authors = await fetchAuthors();
 
-bot.help((ctx) => {
-  ctx.reply('Send /start to receive a greeting');
-  ctx.reply('Send /random_quote to receive a random quote');
-  ctx.reply('Send /quit to stop the bot');
+bot.help( async(ctx) => {
+  await ctx.reply('Send /start to receive a greeting');
+  await ctx.reply('Send /random_quote to receive a random quote');
+  await ctx.reply('Send /quit to stop the bot');
 });
 
 bot.command('/random_quote', async (ctx) => {
@@ -16,8 +16,8 @@ bot.command('/random_quote', async (ctx) => {
   await sendFollowUpMsg(ctx);
 });
 
-bot.command('/quit', (ctx) => {
-  ctx.reply('👋 Goodbye! If you need assistance, just type /start');
+bot.command('/quit', async(ctx) => {
+  await ctx.reply('👋 Goodbye! If you need assistance, just type /start');
 });
 
 authors.forEach((author: { name: string, bio: string }) => {
@@ -49,8 +49,9 @@ authors.forEach((author: { name: string, bio: string }) => {
         ['Random Quote'],
         ['Quit'],
       ]).oneTime().resize()
-  )});
-  
+    )
+  });
+
   bot.hears(`One More Quote by ${author.name}`, async (ctx) => {
     const quote = await fetchQuoteByAuthor(author.name);
     if (quote) {
@@ -84,14 +85,8 @@ bot.hears('Random Quote', async (ctx) => {
   await sendFollowUpMsg(ctx);
 });
 
-bot.hears('Quit', (ctx) => {
-  ctx.reply('👋 Goodbye! If you need assistance, just type /start');
-});
-
-bot.on('message', async (ctx) => {
-  const user = ctx.from?.username || 'Unknown User';
-  console.log(`Received message from ${user}: ${ctx.message}`);
-  await ctx.reply("I didn't understand. Please choose from the keyboard, or type /help for assistance.");
+bot.hears('Quit', async(ctx) => {
+  await ctx.reply('👋 Goodbye! If you need assistance, just type /start');
 });
 
 }

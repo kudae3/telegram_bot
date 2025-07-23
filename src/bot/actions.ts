@@ -49,9 +49,9 @@ export const setUpActions = (bot: Telegraf) => {
       );
     });
 
-    bot.action('quit', (ctx: Context) => {
-      ctx.answerCbQuery();
-      ctx.reply('👋 Goodbye! If you need assistance, just type /start');
+    bot.action('quit', async(ctx: Context) => {
+      await ctx.answerCbQuery();
+      await ctx.reply('👋 Goodbye! If you need assistance, just type /start');
     });
 
     bot.action('random_quote', async (ctx: Context) => {
