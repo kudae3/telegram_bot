@@ -28,7 +28,11 @@ authors.forEach((author: { name: string }) => {
       await ctx.reply(`"${quote.content}" — ${quote.author}`);
       await ctx.reply(`I hope you like this quote! If you want to hear another one, just type the author's name again or send /random_quote.`,
         Markup.keyboard([
-          [`About ${author.name}`, `One More Quote by ${author.name}`, 'Choose Author', 'Random Quote', 'Quit'],
+          [`About ${author.name}`],
+          [`One More Quote by ${author.name}`],
+          ['Choose Author'],
+          ['Random Quote'],
+          ['Quit'],
         ]).oneTime().resize()
       )
     } else {
@@ -40,10 +44,14 @@ authors.forEach((author: { name: string }) => {
 authors.forEach((author: { name: string, bio: string }) => {
   bot.hears(`About ${author.name}`, async (ctx) => {
     await ctx.reply(`${author.bio}`, 
-      Markup.keyboard([
-        [`One More Quote by ${author.name}`, 'Random Quote', 'Quit'],
-      ]).oneTime().resize());
-  });
+        Markup.keyboard([
+          [`About ${author.name}`],
+          [`One More Quote by ${author.name}`],
+          ['Choose Author'],
+          ['Random Quote'],
+          ['Quit'],
+        ]).oneTime().resize()
+    )});
 });
 
 authors.forEach((author: { name: string}) => {
@@ -52,7 +60,11 @@ authors.forEach((author: { name: string}) => {
     if (quote) {
       await ctx.reply(`${quote.content} - ${quote.author}`, 
         Markup.keyboard([
-          [`About ${author.name}`, `One More Quote by ${author.name}`, 'Choose Author', 'Random Quote', 'Quit'],
+          [`About ${author.name}`],
+          [`One More Quote by ${author.name}`],
+          ['Choose Author'],
+          ['Random Quote'],
+          ['Quit'],
         ]).oneTime().resize()
       );
     } else {
@@ -80,9 +92,10 @@ bot.hears('Quit', (ctx) => {
   ctx.reply('👋 Goodbye! If you need assistance, just type /start');
 });
 
-// bot.on(message('text'), (ctx) => {
-//   const user = ctx.from?.username || 'Unknown User';
-//   console.log(`Received message from ${user}: ${ctx.message.text}`);
-//   ctx.reply(`You said: ${ctx.message.text}`);
-// });
+bot.on('message', async (ctx) => {
+  const user = ctx.from?.username || 'Unknown User';
+  console.log(`Received message from ${user}: ${ctx.message}`);
+  await ctx.reply("I didn't understand. Please choose from the keyboard, or type /help for assistance.");
+});
+
 }
