@@ -8,6 +8,7 @@ const authors = await fetchAuthors();
 bot.help( async(ctx) => {
   await ctx.reply('Send /start to receive a greeting');
   await ctx.reply('Send /random_quote to receive a random quote');
+  await ctx.reply('Send /choose_author to select an author and receive quotes from them');
   await ctx.reply('Send /quit to stop the bot');
 });
 
