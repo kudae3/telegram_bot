@@ -1,5 +1,5 @@
 import { Markup, Telegraf } from "telegraf";
-import { fetchAuthors, fetchQuoteByAuthor, sendRandomQuote } from "../utils.ts";
+import { fetchAuthors, fetchQuoteByAuthor, sendFollowUpMsg, sendRandomQuote } from "../utils.ts";
 import { message } from "telegraf/filters";
 
 export const setUpCommands = async(bot: Telegraf) => {
@@ -12,7 +12,7 @@ bot.help((ctx) => {
 
 bot.command('/random_quote', async (ctx) => {
   await sendRandomQuote(ctx);
-  await sendRandomQuote(ctx);
+  await sendFollowUpMsg(ctx);
 });
 
 bot.command('/quit', (ctx) => {
@@ -26,9 +26,9 @@ authors.forEach((author: { name: string }) => {
     
     if (quote) {
       await ctx.reply(`"${quote.content}" — ${quote.author}`);
-      await ctx.reply(`Want to get another quote from ${quote.author}?`,
+      await ctx.reply(`I hope you like this quote! If you want to hear another one, just type the author's name again or send /random_quote.`,
         Markup.keyboard([
-          ['Yes', 'No']
+          ['Choose Author', 'Random Quote', 'Quit'],
         ]).oneTime().resize()
       )
     } else {
@@ -37,8 +37,23 @@ authors.forEach((author: { name: string }) => {
   });
 });
 
-bot.hears('No', async(ctx) => {
-  await ctx.reply('Okay, type /authors if you want to choose a specific author!');
+bot.hears('Choose Author', async (ctx) => {
+    const authors = await fetchAuthors();
+    
+    await ctx.reply("Please choose the name of the author you want to hear quotes from.", 
+        Markup.keyboard(
+          authors.map((author: {name: string}) => [author.name])
+        ).oneTime().resize()
+    );
+})
+
+bot.hears('Random Quote', async (ctx) => {
+  await sendRandomQuote(ctx);
+  await sendFollowUpMsg(ctx);
+});
+
+bot.hears('Quit', (ctx) => {
+  ctx.reply('👋 Goodbye! If you need assistance, just type /start');
 });
 
 // bot.on(message('text'), (ctx) => {

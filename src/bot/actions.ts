@@ -63,10 +63,11 @@ export const setUpActions = (bot: Telegraf) => {
     bot.action('choose_author', async (ctx: Context) => {
         await ctx.answerCbQuery();
         const authors = await fetchAuthors();
-        console.log('Authors fetched:', authors);
         
         await ctx.reply("Please choose the name of the author you want to hear quotes from.", 
-            Markup.keyboard(authors.map((author: {name: string}) => [author.name]))
+            Markup.keyboard(
+              authors.map((author: {name: string}) => [author.name])
+            ).oneTime().resize()
         );
     })
 }
