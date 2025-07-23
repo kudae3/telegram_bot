@@ -29,8 +29,6 @@ export const fetchAuthors = async () => {
     try {
         const response = await axios.get(`${env.INSPIRE_API}/authors`);
         const authors = response.data.results;
-        console.log('Fetched authors:', authors);
-        
         return authors;
     } catch (error) {
         console.log('Error fetching authors:', error);

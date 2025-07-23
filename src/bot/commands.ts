@@ -20,7 +20,7 @@ bot.command('/quit', (ctx) => {
   ctx.reply('👋 Goodbye! If you need assistance, just type /start');
 });
 
-authors.forEach((author: { name: string }) => {
+authors.forEach((author: { name: string, bio: string }) => {
   bot.hears(author.name, async (ctx) => {
     const quote = await fetchQuoteByAuthor(author.name);
     
@@ -39,22 +39,18 @@ authors.forEach((author: { name: string }) => {
       await ctx.reply(`No quotes found for ${author.name}.`);
     }
   });
-});
 
-authors.forEach((author: { name: string, bio: string }) => {
   bot.hears(`About ${author.name}`, async (ctx) => {
-    await ctx.reply(`${author.bio}`, 
-        Markup.keyboard([
-          [`About ${author.name}`],
-          [`One More Quote by ${author.name}`],
-          ['Choose Author'],
-          ['Random Quote'],
-          ['Quit'],
-        ]).oneTime().resize()
-    )});
-});
-
-authors.forEach((author: { name: string}) => {
+  await ctx.reply(`${author.bio}`, 
+      Markup.keyboard([
+        [`About ${author.name}`],
+        [`One More Quote by ${author.name}`],
+        ['Choose Author'],
+        ['Random Quote'],
+        ['Quit'],
+      ]).oneTime().resize()
+  )});
+  
   bot.hears(`One More Quote by ${author.name}`, async (ctx) => {
     const quote = await fetchQuoteByAuthor(author.name);
     if (quote) {
