@@ -11,12 +11,24 @@ bot.help( async(ctx) => {
   await ctx.reply('Send /quit to stop the bot');
 });
 
-bot.command('/random_quote', async (ctx) => {
+bot.command('random_quote', async (ctx) => {
+  console.log('User requested a random quote');
   await sendRandomQuote(ctx);
   await sendFollowUpMsg(ctx);
 });
 
-bot.command('/quit', async(ctx) => {
+bot.command('choose_author', async(ctx) => {
+  console.log('User requested to choose an author');
+  await ctx.reply("Please choose the name of the author you want to hear quotes from.", 
+    Markup.keyboard(
+      authors.map((author: {name: string}) => [author.name])
+    ).oneTime().resize()
+  );
+});
+
+bot.command('quit', async(ctx) => {
+  console.log('User requested to quit');
+  
   await ctx.reply('👋 Goodbye! If you need assistance, just type /start');
 });
 
