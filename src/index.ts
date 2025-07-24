@@ -5,21 +5,17 @@ import { setUpActions } from './bot/actions.ts';
 import { setUpCommands } from './bot/commands.ts';
 import { setupWebhook } from './webhook.ts';
 import { smallTalk } from './smallTalk.ts';
+import { env } from '../config/env.ts';
 
 dotenv.config();
 
-// Load environment variables
-const BOT_TOKEN = process.env.BOT_TOKEN as string;
-const WEBHOOK_URL = process.env.WEBHOOK_URL as string;
-const PORT = parseInt(process.env.PORT || '3000', 10);
-
-if (!BOT_TOKEN || !WEBHOOK_URL) {
+if (!env.BOT_TOKEN || !env.WEBHOOK_URL) {
   throw new Error('BOT_TOKEN and WEBHOOK_URL must be defined in .env');
 }
 
 // Initialize Express and Telegraf
 const app = express();
-const bot = new Telegraf(BOT_TOKEN);
+const bot = new Telegraf(env.BOT_TOKEN);
 
 setUpActions(bot);
 setUpCommands(bot);
@@ -30,11 +26,11 @@ smallTalk(bot);
 app.use(bot.webhookCallback('/telegram'));
 
 // Root route for health check
-app.get('/', (req, res) => {
+app.get('/', (req: any, res: any) => {
   res.send('🚀 Your Bot is running!');
 });
 
 // Start Express server
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+app.listen(env.PORT, () => {
+  console.log(`🚀 Server running on port ${env.PORT}`);
 });
