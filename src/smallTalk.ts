@@ -1,4 +1,4 @@
-import { Markup, Telegraf } from "telegraf";
+import { Context, Markup, Telegraf } from "telegraf";
 
 export const smallTalk = (bot: Telegraf) => {
     bot.hears(/hi|hello|hey/i, (ctx) => {
@@ -10,11 +10,11 @@ export const smallTalk = (bot: Telegraf) => {
       );
     });
     
-    bot.hears(/thank(s| you)/i, (ctx) => {
+    bot.hears(/thank(s| you)/i, (ctx: Context) => {
       ctx.reply("You're welcome! 😊");
     });
     
-    bot.hears(/bye|goodbye/i, (ctx) => {
+    bot.hears(/bye|goodbye/i, (ctx: Context) => {
       ctx.reply("👋 Goodbye! Come back if you need inspiration by typing /start.");
     });
 }

@@ -8,7 +8,7 @@ export const setupWebhook = (bot: Telegraf) => {
         const info = await bot.telegram.getWebhookInfo()
         console.log('Current Webhook Info:', info);
     })
-    .catch((err) => {
+    .catch((err: any) => {
         console.error('Error setting webhook:', err)
     });
 }
