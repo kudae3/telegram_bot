@@ -18,9 +18,13 @@ export const sendRandomQuote = async (ctx: Context) => {
 export const sendFollowUpMsg = async (ctx: Context) => {
     await ctx.reply("Do you like it? If you want more inspiration, just let me know!",
     Markup.inlineKeyboard([
-      Markup.button.callback('Yes, another one!', 'random_quote'),
-      Markup.button.callback('Choose author', 'choose_author'),
-      Markup.button.callback('No, I need a break', 'quit')
+        [
+            Markup.button.callback('Yes, another one!', 'random_quote'),
+            Markup.button.callback('Choose author', 'choose_author'),
+        ], 
+        [
+            Markup.button.callback('No, I need a break', 'quit')
+        ]
     ])
   );
 }

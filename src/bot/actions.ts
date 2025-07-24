@@ -42,9 +42,12 @@ export const setUpActions = (bot: Telegraf) => {
       await sendRandomQuote(ctx);
       await ctx.reply("Do you like it? If you want more inspiration, just let me know!",
         Markup.inlineKeyboard([
-          Markup.button.callback('Yes, another one!', 'random_quote'),
-          Markup.button.callback('I want to choose the category', 'choose_category'),
-          Markup.button.callback('No, I need a break', 'quit')
+          [
+            Markup.button.callback('Yes, another one!', 'random_quote'),
+            Markup.button.callback('I want to choose the author', 'choose_author'),
+          ], [
+            Markup.button.callback('No, I need a break', 'quit')
+          ]
         ])
       );
     });
