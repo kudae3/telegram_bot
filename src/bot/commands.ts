@@ -1,5 +1,5 @@
 import { Markup, Telegraf } from "telegraf";
-import { fetchAuthors, fetchQuoteByAuthor, sendFollowUpMsg, sendRandomQuote } from "../utils.ts";
+import { fetchAuthors, fetchQuoteByAuthor, sendFollowUpMsg, sendRandomQuote } from "../utils";
 
 export const setUpCommands = async(bot: Telegraf) => {
 

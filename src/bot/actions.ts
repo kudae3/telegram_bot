@@ -1,5 +1,5 @@
 import { Context, Markup, Telegraf } from "telegraf";
-import { fetchAuthors, sendFollowUpMsg, sendRandomQuote } from "../utils.ts";
+import { fetchAuthors, sendFollowUpMsg, sendRandomQuote } from "../utils";
 
 export const setUpActions = (bot: Telegraf) => {
 

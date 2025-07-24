@@ -1,11 +1,11 @@
 import { Telegraf } from 'telegraf';
 import express from 'express';
 import * as dotenv from 'dotenv';
-import { setUpActions } from './bot/actions.ts';
-import { setUpCommands } from './bot/commands.ts';
-import { setupWebhook } from './webhook.ts';
-import { smallTalk } from './smallTalk.ts';
-import { env } from '../config/env.ts';
+import { setUpActions } from './bot/actions';
+import { setUpCommands } from './bot/commands';
+import { setupWebhook } from './webhook';
+import { smallTalk } from './smallTalk';
+import { env } from './config/env';
 
 dotenv.config();
 

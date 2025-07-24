@@ -1,5 +1,5 @@
 import { Telegraf } from "telegraf";
-import { env } from "../config/env.ts";
+import { env } from "./config/env";
 
 export const setupWebhook = (bot: Telegraf) => {
     bot.telegram.setWebhook(`${env.WEBHOOK_URL}/telegram`)

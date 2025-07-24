@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Context, Markup } from "telegraf";
-import { env } from "../config/env.ts";
+import { env } from "./config/env";
 
 export const sendRandomQuote = async (ctx: Context) => {
     try {
